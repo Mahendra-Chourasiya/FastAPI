@@ -152,83 +152,83 @@ class ExcelLoader:
 # Set up AssemblyAI API Key
 aai.settings.api_key = "3a6b59d26708443a889c231d59a43ef4"
 
-class VideoLoader:
-    """Load video files and extract text using AssemblyAI API."""
+# class VideoLoader:
+#     """Load video files and extract text using AssemblyAI API."""
 
-    def __init__(self, file_path: str, output_folder: str = "../data"):
-        self.file_path = file_path
-        self.output_folder = output_folder
+#     def __init__(self, file_path: str, output_folder: str = "../data"):
+#         self.file_path = file_path
+#         self.output_folder = output_folder
 
-    def load(self) -> List[Document]:
-        """Extract text from video using AssemblyAI and save it in the specified folder."""
-        # Convert local video file path to a remote URL or use local file path directly
-        text = self.transcribe_video_with_assemblyai(self.file_path)
+#     def load(self) -> List[Document]:
+#         """Extract text from video using AssemblyAI and save it in the specified folder."""
+#         # Convert local video file path to a remote URL or use local file path directly
+#         text = self.transcribe_video_with_assemblyai(self.file_path)
 
-        # Check if text was successfully extracted
-        if not text.strip():
-            print(f"No text extracted from video: {self.file_path}")
-            return []
+#         # Check if text was successfully extracted
+#         if not text.strip():
+#             print(f"No text extracted from video: {self.file_path}")
+#             return []
 
-        # Clean the text using the clean_text method of CleanTextLoader
-        text = CleanTextLoader.clean_text(self, text)
-        metadata = {"source": self.file_path}
+#         # Clean the text using the clean_text method of CleanTextLoader
+#         text = CleanTextLoader.clean_text(self, text)
+#         metadata = {"source": self.file_path}
 
-        # Save text to file
-        text_filename = os.path.basename(self.file_path).replace('.mp4', '.txt').replace('.avi', '.txt')
-        self.save_text_to_file(text, text_filename)
+#         # Save text to file
+#         text_filename = os.path.basename(self.file_path).replace('.mp4', '.txt').replace('.avi', '.txt')
+#         self.save_text_to_file(text, text_filename)
 
-        # Check if the file was saved correctly
-        text_file_path = os.path.join(self.output_folder, text_filename)
-        if not os.path.isfile(text_file_path):
-            print(f"Failed to save text file: {text_file_path}")
-            return []
+#         # Check if the file was saved correctly
+#         text_file_path = os.path.join(self.output_folder, text_filename)
+#         if not os.path.isfile(text_file_path):
+#             print(f"Failed to save text file: {text_file_path}")
+#             return []
 
-        return [Document(page_content=text, metadata=metadata)]
+#         return [Document(page_content=text, metadata=metadata)]
 
-    def transcribe_video_with_assemblyai(self, video_file_path: str) -> str:
-        """
-        Transcribe video to text using AssemblyAI.
+#     def transcribe_video_with_assemblyai(self, video_file_path: str) -> str:
+#         """
+#         Transcribe video to text using AssemblyAI.
 
-        Args:
-            video_file_path (str): Path to the local video file.
+#         Args:
+#             video_file_path (str): Path to the local video file.
 
-        Returns:
-            str: Transcribed text from the video.
-        """
-        # Convert video file to audio (since AssemblyAI API needs audio input)
-        audio_output_path = os.path.join(self.output_folder, "temp_audio.wav")
-        print("Extracting audio from video...")
-        try:
-            # Step 1: Extract audio from video
-            # video = mp.VideoFileClip(video_file_path)
-            video.audio.write_audiofile(audio_output_path)
+#         Returns:
+#             str: Transcribed text from the video.
+#         """
+#         # Convert video file to audio (since AssemblyAI API needs audio input)
+#         audio_output_path = os.path.join(self.output_folder, "temp_audio.wav")
+#         print("Extracting audio from video...")
+#         try:
+#             # Step 1: Extract audio from video
+#             # video = mp.VideoFileClip(video_file_path)
+#             video.audio.write_audiofile(audio_output_path)
 
-            # Step 2: Use AssemblyAI to transcribe the audio file
-            print("Uploading audio to AssemblyAI and starting transcription...")
-            transcriber = aai.Transcriber()
-            transcript = transcriber.transcribe(audio_output_path)
+#             # Step 2: Use AssemblyAI to transcribe the audio file
+#             print("Uploading audio to AssemblyAI and starting transcription...")
+#             transcriber = aai.Transcriber()
+#             transcript = transcriber.transcribe(audio_output_path)
 
-            # Step 3: Remove temporary audio file
-            if os.path.exists(audio_output_path):
-                os.remove(audio_output_path)
-            print("Transcription complete.")
-            return transcript.text
-        except Exception as e:
-            print(f"Error during transcription with AssemblyAI: {e}")
-            return ""
+#             # Step 3: Remove temporary audio file
+#             if os.path.exists(audio_output_path):
+#                 os.remove(audio_output_path)
+#             print("Transcription complete.")
+#             return transcript.text
+#         except Exception as e:
+#             print(f"Error during transcription with AssemblyAI: {e}")
+#             return ""
 
-    def save_text_to_file(self, text: str, file_name: str):
-        """Save the extracted text to a file in the data folder."""
-        if not os.path.exists(self.output_folder):
-            os.makedirs(self.output_folder)
+#     def save_text_to_file(self, text: str, file_name: str):
+#         """Save the extracted text to a file in the data folder."""
+#         if not os.path.exists(self.output_folder):
+#             os.makedirs(self.output_folder)
 
-        output_file_path = os.path.join(self.output_folder, file_name)
-        try:
-            with open(output_file_path, 'w', encoding='utf-8') as f:
-                f.write(text)
-            print(f"Text extracted and saved to: {output_file_path}")
-        except Exception as e:
-            print(f"Error saving text file: {e}")
+#         output_file_path = os.path.join(self.output_folder, file_name)
+#         try:
+#             with open(output_file_path, 'w', encoding='utf-8') as f:
+#                 f.write(text)
+#             print(f"Text extracted and saved to: {output_file_path}")
+#         except Exception as e:
+#             print(f"Error saving text file: {e}")
 
 # Updated function to load different file types including video files
 # --- Function to load, split, and chunk the documents ---
@@ -252,8 +252,8 @@ def load_n_split(path: str) -> List[Document]:
                     loader = ExcelLoader(file_path)
                 # elif file.endswith(('.png', '.jpg', '.jpeg')):
                     # loader = ImageLoader(file_path)  # Use ImageLoader for image files
-                elif file.endswith('.mp4') or file.endswith('.avi'):
-                    loader = VideoLoader(file_path)
+                # elif file.endswith('.mp4') or file.endswith('.avi'):
+                #     loader = VideoLoader(file_path)
                 else:
                     print(f"Unsupported file type: {file}")
                     continue

@@ -22,7 +22,5 @@ pdf2image
 pillow
 moviepy
 SpeechRecognition
-pyaudio
-assemblyai
 watchdog
 pymongo
