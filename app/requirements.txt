@@ -24,3 +24,4 @@ moviepy
 SpeechRecognition
 watchdog
 pymongo
+huggingface_hub==0.8.1
