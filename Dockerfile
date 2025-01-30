@@ -5,6 +5,7 @@ WORKDIR /app
 COPY ./app ./
 COPY ./app/requirements.txt ./
 # COPY ./llms ./llms
+RUN pip install --upgrade pip setuptools wheel --no-cache-dir
 RUN pip install --upgrade pip --no-cache-dir
 RUN pip install -r /app/requirements.txt 
 #--no-cache-dir
